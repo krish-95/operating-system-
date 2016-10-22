@@ -1,0 +1,83 @@
+#include<stdio.h>
+
+struct page
+{
+	int pno; 
+	int cnt;
+};
+
+main()
+{
+	struct page m[10];
+	int avail, small, sind, c, count = 0, x, i, j, n, f, k, pmax, page[25], frame[10];
+	
+	printf("Enter the maximum page number :: ");
+	scanf("%d",&pmax);
+
+	for(i = 1; i <= pmax; i++)
+        {
+                m[i].pno = i;
+                m[i].cnt = 0;
+        }
+
+	printf("Enter the number of pages :: ");
+	scanf("%d",&n);
+	
+	printf("Enter the pages :: ");
+	for(i = 0; i < n; i++)
+	{
+		scanf("%d", &page[i]);
+	}
+
+	printf("Enter the number of frames in memory :: ");
+	scanf("%d", &f);
+
+	for(i = 0; i < f; i++)
+		frame[i] = -1;
+	j = 0;
+	printf("\tPages\t Page Allocated to Frame\n");
+	for(i = 0; i < n; i++)
+        {
+        	printf("\t%d\t\t",page[i]);
+		c++;
+                avail=0;
+                for(k = 0; k < f; k++)
+		{
+			if(frame[k] == page[i])
+			{
+				avail=1;
+				m[frame[k]].cnt = c;
+			}
+		}
+
+		sind = 0;
+                if(avail == 0)
+                {
+			small = n + 1;
+			for(k = 0; k < f; k++)
+			{
+				x = frame[k];
+				if(x == -1)
+				{
+					sind = k;
+					break;
+				}
+				if(small > m[x].cnt)
+				{
+					small = m[x].cnt;
+					sind = k;
+				}				
+			}
+		 	
+			//printf("\nsind :: %d",sind);
+                       	frame[sind] = page[i];
+			x = page[i];
+			m[x].cnt = c;
+                        count++;
+                        for(k = 0; k < f; k++)
+                               	printf("%d\t",frame[k]);
+		}
+                printf("\n");
+	}
+        printf("Number of Page Fault is %d\n\n",count);
+}
