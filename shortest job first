@@ -1,0 +1,75 @@
+#define maxno 1000
+#include<stdio.h>
+#include<string.h>
+main()
+{
+	int i,j,k,n,t,pv,flg,smallbt,a[10],b[10],w[10],f[10],ta[10],flag[10];
+	char p[10][4],temp[10];
+	printf("Enter the number of jobs : ");
+	scanf("%d",&n);
+	printf("\nEnter the process name, arrival & burst times of the jobs\n\n");
+	for(i=0;i<n;i++)
+	{
+		printf("Job %d :   ",i+1);
+		flag[i]=0;
+		scanf("%s", p[i]);
+		scanf("%d", &a[i]);
+		scanf("%d", &b[i]);
+	}
+	for(i=0;i<n;i++)			/*   SORTING	*/
+	{
+		for(j=i+1;j<n;j++)
+		{
+			if(a[i] > a[j])
+			{
+				t=a[i];		a[i]=a[j];	a[j]=t;
+	
+				t=b[i];		b[i]=b[j];	b[j]=t;
+
+				strcpy(temp,p[i]);	
+				strcpy(p[i],p[j]);
+				strcpy(p[j],temp);	
+			}
+		}
+	}
+	i=0,f[0]=0,pv=0;			
+	do
+	{
+		flg = 0;
+		j = 0;
+		k = 0;
+		smallbt = maxno;
+		while((f[pv] >= a[j]) && (j < n))
+		{
+			if((smallbt > b[j]) && (flag[j] == 0))
+			{
+				flg = 1;
+				smallbt = b[j];
+				k = j;
+			}
+			j++;
+		}
+		if(flg == 0)
+		{
+			f[i] = a[i] + b[i];	/*	IDLE TIME	*/
+			flag[i] = 1;
+			pv = i;
+		}
+		else
+		{			
+			f[k] = f[pv] + b[k];
+			flag[k] = 1;
+			pv = k;
+		}	
+		w[pv] = f[pv] - (a[pv] + b[pv]);
+		ta[pv] = f[pv] - a[pv];
+		i++;
+	}while(i<n);
+	printf("\n\n\t\t\t\t  OUTPUT  \n");
+	printf("\nPN\tAT\tBT\tFT\tWT\tTT\t\n\n");
+	for(i=0;i<n;i++)
+	{
+		printf("%s\t%d\t%d\t%d\t%d\t%d\n",p[i],a[i],b[i],f[i],w[i],ta[i]);
+	}
+	
+ }
