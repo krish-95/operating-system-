@@ -1,0 +1,58 @@
+#include<stdio.h>
+struct process
+{
+char p[3];
+int at,bt,wt,ft,tt;
+}ps[10];
+
+main()
+{
+struct process temp;
+int i,n,j;
+float avgw,avgt,sumwt=0,sumtt=0;
+printf("\nEnter the no.of processes...");
+scanf("%d",&n);
+for(i=0;i<n;i++)
+{
+printf("\nEnter the Process Name,AT and BT \n");
+scanf("%s%d%d",&ps[i].p,&ps[i].at,&ps[i].bt);
+}
+//Sort
+for(i=0;i<n;i++)
+{
+for(j=i+1;j<n;j++)
+{
+if(ps[i].at>ps[j].at)
+{
+temp=ps[i];
+ps[i]=ps[j];
+ps[j]=temp;
+}
+}
+}
+//After sort
+ps[0].wt=0;
+ps[0].tt=ps[0].bt;
+ps[0].ft=ps[0].bt;
+for(i=1;i<n;i++)
+{
+ps[i].wt=ps[i-1].wt+ps[i-1].bt;
+ps[i].tt=ps[i].wt+ps[i].bt;
+ps[i].ft=ps[i-1].ft+ps[i].bt;
+}
+printf("\nThe FCFS Schedule...\n");
+printf("\nProcess\tAt\tBT\tWt\tFT\tTT\n");
+for(i=0;i<n;i++)
+{
+printf("\n%s\t%d\t%d\t%d\t%d\t%d",ps[i].p,ps[i].at,ps[i].bt,ps[i].wt,ps[i].ft,ps[i].tt);
+}
+for(i=0;i<n;i++)
+{
+sumwt=sumwt+ps[i].wt;
+avgw=sumwt/n;
+sumtt=sumtt+ps[i].tt;
+avgt=sumtt/n;
+}
+printf("\nAverage WT = %f",avgw);
+printf("\nAverage TT = %f",avgt);
+}
