@@ -1,0 +1,84 @@
+#include<stdio.h>
+main()
+{
+	int i,j,k,n,t,pv,priority,a[10],b[10],p[10],w[10],f[10],ta[10],flag[10];
+	printf("Enter the number of jobs : ");
+	scanf("%d",&n);
+	printf("\nEnter the arrival & burst times of the jobs along with the priority of execution\n\n");
+	for(i=0;i<n;i++)
+	{
+		printf("Job %d :   ",i+1);
+		flag[i]=0;
+		scanf("%d", &a[i]);
+		scanf("%d", &b[i]);
+		scanf("%d", &p[i]);
+	}
+	for(i=0;i<n;i++)                        /*   SORTING    */
+        {
+                for(j=i+1;j<n;j++)
+                {
+                        if(a[i] > a[j])
+                        {
+                                t=a[i];
+                                a[i]=a[j];
+                                a[j]=t;
+
+                                t=b[i];
+                                b[i]=b[j];
+                                b[j]=t;
+                        }
+                }
+        }
+	i=0;
+	do
+	{
+		if(i == 0)
+		{
+			f[i] = b[i];
+			flag[i] = 1;
+			w[i] = f[i] - (a[i] + b[i]);
+			ta[i] = f[i] - a[i];
+			pv = i++;
+			continue;
+		}
+		j = 0;
+		k = 0;
+		priority = n+1;
+
+		while((f[pv] >= a[j]) && (j < n))
+		{
+			if((priority > p[j]) && (flag[j] == 0))
+			{
+				priority = p[j];
+				k = j;
+			}
+			j++;
+		}
+		if(k != 0)
+		{
+			f[k] = f[pv] + b[k];
+			flag[k] = 1;
+			pv = k;
+		}
+		else
+		{
+			f[i] = f[pv] + b[i];
+			if(f[pv] < a[i])         /*  IDLE TIME  */
+			{
+				f[i]+=a[i]-f[pv];
+			}
+			flag[i] = 1;
+			pv = i;
+		}
+		w[pv] = f[pv] - (a[pv] + b[pv]);
+		ta[pv] = f[pv] - a[pv];
+		i++;
+	}while(i<n);
+	printf("\n\t\t\t\t  OUTPUT  \n");
+	printf("\t\t\t\t  ------\n");
+	printf("\n\tAT\tBT\tPRIORITY\tFT\tWT\tTT\t\n\n");
+	for(i=0;i<n;i++)
+	{
+		printf("\t%d\t%d\t   %d\t%d\t%d\t%d\n",a[i],b[i],p[i],f[i],w[i],ta[i]);
+	}
+}
