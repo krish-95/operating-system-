@@ -1,0 +1,40 @@
+#include<stdio.h>
+
+main()
+{
+	int avail, count, i, j, n, f, k, page[10], frame[10];
+	
+	printf("Enter the number of pages :: ");
+	scanf("%d",&n);
+	
+	printf("Enter the pages :: ");
+	for(i = 0; i < n; i++)
+		scanf("%d", &page[i]);
+	
+	printf("Enter the number of frames in memory :: ");
+	scanf("%d", &f);
+
+	for(i = 0; i < f; i++)
+		frame[i] = -1;
+	j = 0;
+	printf("\tPages\t Page Allocated to Frame\n");
+	for(i = 0; i < n; i++)
+        {
+        	printf("\t%d\t\t",page[i]);
+                avail=0;
+                for(k = 0; k < f; k++)
+			if(frame[k] == page[i])
+
+                		avail=1;
+                if(avail == 0)
+                {
+                       	frame[j] = page[i];
+                        j = (j + 1) % f;
+                        count++;
+                        for(k = 0; k < f; k++)
+                               	printf("%d\t",frame[k]);
+		}
+                printf("\n");
+	}
+        printf("Number of Page Fault is %d\n\n",count);
+}
